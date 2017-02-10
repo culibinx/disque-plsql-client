@@ -805,6 +805,7 @@ as
         -- for error
         if (v_end < 1) then return p_body_out; else
           if (p_pass_error_in_out > 0) then
+            dbms_lob.createtemporary(p_body_out, true, dbms_lob.session);
             dbms_lob.copy(p_body_out, p_body, v_end - v_start, 1, v_start);
           else
             dbms_output.put_line('error:' || dbms_lob.substr(p_body, LEAST(v_end - v_start, 32767), v_start));
@@ -813,8 +814,8 @@ as
       else
         -- for ok
         -- out result
-        dbms_lob.createtemporary(p_body_out, true, dbms_lob.session);
         if (v_end < 1) then return p_body_out; else
+          dbms_lob.createtemporary(p_body_out, true, dbms_lob.session);
           dbms_lob.copy(p_body_out, p_body, v_end - v_start, 1, v_start);
         end if;
       end if;
